@@ -3,11 +3,13 @@ package gameplay;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class QuestionGenerator {
 	private static QuestionGenerator instance = null;
+	private ArrayList<CountryInformation> info;
 	
 	protected QuestionGenerator() {}
 	
@@ -56,13 +58,13 @@ public class QuestionGenerator {
 		}
 	}
 	
-	public Question generateQuestion(ArrayList<CountryInformation> info) {
+	public Question generateQuestion() {
 		InformationType qtype = InformationType.randomType();
 		ArrayList<CountryInformation> variants = new ArrayList<CountryInformation>(4);
 		Random rand = new Random();
 		int i = 0;
 		while (i < 4) {
-			CountryInformation cInfo = info.get(rand.nextInt(info.size()));
+			CountryInformation cInfo = getInfo().get(rand.nextInt(getInfo().size()));
 			if (!variants.contains(cInfo)) {
 				variants.add(cInfo);
 				i++;
@@ -80,6 +82,20 @@ public class QuestionGenerator {
 		}
 		
 		return new Question(question, variantsAnswers, solution);
+	}
+
+	public void printCountriesInformation() {
+		for(Iterator<CountryInformation> it = info.iterator(); it.hasNext(); ) {
+			System.out.println(it.next().toString());
+		}
+	}
+		
+	public ArrayList<CountryInformation> getInfo() {
+		return info;
+	}
+
+	public void setInfo(ArrayList<CountryInformation> info) {
+		this.info = info;
 	}
 }
 

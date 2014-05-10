@@ -1,0 +1,5 @@
+ "all_quizzes" table contains information about countries.
+
+Generated using this library:
+	- https://github.com/peric/GetCountries
+	- http://peric.github.io/GetCountries/

@@ -1,5 +1,6 @@
- "all_quizzes" table contains information about countries.
+"all_quizzes" table contains information about countries.
+Engine MyISAM was modified with InnoDB.
 
-Generated using this library:
+Table was Generated using this library:
 	- https://github.com/peric/GetCountries
 	- http://peric.github.io/GetCountries/

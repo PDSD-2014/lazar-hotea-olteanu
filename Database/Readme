@@ -1,4 +1,4 @@
-"all_quizzes" table contains information about countries.
+"countries" table contains information about countries.
 Engine MyISAM was modified with InnoDB.
 
 Table was Generated using this library:

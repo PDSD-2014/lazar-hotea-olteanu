@@ -11,6 +11,7 @@ public class Question {
 	private String question;
 	private ArrayList<String> variants;
 	private String solution;
+	private String extra = "ABCD";
 	
 	public Question(String question, ArrayList<String> variants, String solution) {
 		this.setQuestion(question);
@@ -63,9 +64,10 @@ public class Question {
 		result.append(this.getQuestion());
 		result.append("\n");
 		
+		// Variants changed from 1) to A:
 		for(int i = 0; i < 4; i++) {
-			result.append(i + 1);
-			result.append(") ");
+			result.append(extra.charAt(i));
+			result.append(": ");
 			result.append(this.getVariants().get(i));
 			result.append("\n");
 		}

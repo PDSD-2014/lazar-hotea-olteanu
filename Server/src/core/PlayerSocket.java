@@ -24,12 +24,7 @@ public class PlayerSocket {
 	}
 	
 	public String readMessage() throws IOException {
-		StringBuffer message = new StringBuffer();
-        String input;
-		while ((input = reader.readLine()) != null) {
-            message.append(input);
-        }
-		return message.toString();
+		return reader.readLine();
 	}
 	
     public void writeMessage(String message) throws IOException {
@@ -43,5 +38,17 @@ public class PlayerSocket {
 
 	public void setSocket(Socket socket) {
 		this.socket = socket;
+	}
+	
+	public void close() {	
+		try {
+			this.reader.close();
+			this.writer.close();
+			this.socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

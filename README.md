@@ -16,3 +16,5 @@ In order to start lampp server use the following command line: **sudo /opt/lampp
 Allow Client to connect to remote MySQL Server
 GRANT ALL ON pdsd.* to 'user'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
+
+TODO

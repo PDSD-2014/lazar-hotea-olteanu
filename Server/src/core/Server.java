@@ -71,13 +71,13 @@ public class Server {
 		DBConnection db = new DBConnection(url, user, password);
 		ArrayList<CountryInformation> countriesInfo = 
 				(ArrayList<CountryInformation>) db.getCountriesInformation();
-		QuestionGenerator.getInstance().setInfo(countriesInfo);
-		System.out.println(QuestionGenerator.getInstance().generateQuestion());
+		QuestionGenerator.getInstance().setInfo(countriesInfo);	
 	}
 	
 	public void closeConnection() {
 		try {
-			serverSocket.close();
+			if (serverSocket != null)
+				serverSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

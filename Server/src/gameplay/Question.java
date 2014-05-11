@@ -2,6 +2,11 @@ package gameplay;
 
 import java.util.ArrayList;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+import utils.GameInfo;
+
 public class Question {
 	private String question;
 	private ArrayList<String> variants;
@@ -11,6 +16,22 @@ public class Question {
 		this.setQuestion(question);
 		this.setVariants(variants);
 		this.setSolution(solution);
+	}
+	
+	public static Question generateObject(String json) {
+		String question;
+		ArrayList<String> variants;
+		String solution;
+		JSONObject obj = (JSONObject)JSONValue.parse(json);
+		
+		if (!obj.containsKey("question") || !obj.containsKey("variants") || !obj.containsKey("solution"))
+			return null;
+		
+		question = (String)obj.get("question");
+		variants = (ArrayList<String>)obj.get("variants");
+		solution = (String)obj.get("solution");
+		
+		return new Question(question, variants, solution);
 	}
 
 	String getQuestion() {
@@ -53,5 +74,14 @@ public class Question {
 		result.append(")");
 		
 		return result.toString();
+	}
+	
+	public String JSONToString() {
+		JSONObject obj = new JSONObject();
+		obj.put("question", question);
+		obj.put("variants", variants);
+		obj.put("solution", solution);
+		
+		return obj.toString();
 	}
 }

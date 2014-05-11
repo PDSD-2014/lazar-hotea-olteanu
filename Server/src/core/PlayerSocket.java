@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class PlayerSocket {
 	private Socket socket;
@@ -23,13 +24,27 @@ public class PlayerSocket {
 		}
 	}
 	
-	public String readMessage() throws IOException {
-		return reader.readLine();
+	public String readMessage() {
+		String response = null;
+		try {
+			response = reader.readLine();
+		} catch (SocketException se) {
+			response = "TIMEOUT";
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
-    public void writeMessage(String message) throws IOException {
-        writer.write(message);
-        writer.flush();
+    public void writeMessage(String message) {
+        try {
+			writer.write(message);
+			writer.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
     }
 
 	public Socket getSocket() {

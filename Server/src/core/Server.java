@@ -56,8 +56,13 @@ public class Server {
 					Player player = new Player(playerSocket, userName, userScore);
 					lastRoom.addPlayer(player);
 					player.setGameRoom(lastRoom);
-					if (lastRoom.isFull())
+					if (lastRoom.isFull()) {
+						if (player == lastRoom.getPlayerOne())
+							player.setOpponent(lastRoom.getPlayerTwo());
+						else
+							player.setOpponent(lastRoom.getPlayerOne());
 						lastRoom.startGame();
+					}
 				} else {
 					GameRoom newRoom = new GameRoom(gameRooms.size());
 					newRoom.addPlayer(new Player(playerSocket, userName, userScore));

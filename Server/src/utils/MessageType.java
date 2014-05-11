@@ -9,6 +9,8 @@ public final class MessageType {
     public static final String QUESTION = "QUESTION";
     public static final String QUESTION_RESPONSE = "QUESTION_RESPONSE";
     public static final String QUESTION_ANSWER = "QUESTION_ANSWER";
+    public static final String TIMEOUT = "TIMEOUT";
+    public static final String WRONG_TYPE = "WRONG_TYPE";
     
     private MessageType() {}  
 }

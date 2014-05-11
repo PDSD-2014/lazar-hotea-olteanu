@@ -15,8 +15,8 @@ public class GameRoom {
 	
 	public GameRoom(int roomId) {
 		this.setRoomId(roomId);
-		playerOne = null;
-		playerTwo = null;
+		setPlayerOne(null);
+		setPlayerTwo(null);
 		qGenerator = QuestionGenerator.getInstance();
 		playersNumber = 0;
 		setQuestionNumber(0);
@@ -24,12 +24,12 @@ public class GameRoom {
 	}
 	
 	public boolean addPlayer(Player player) {
-		if (playerOne == null && player != null) {
-			playerOne = player;
+		if (getPlayerOne() == null && player != null) {
+			setPlayerOne(player);
 			playersNumber++;
 			return true;
-		} else if (playerTwo == null && player != null) {
-			playerTwo = player;
+		} else if (getPlayerTwo() == null && player != null) {
+			setPlayerTwo(player);
 			playersNumber++;
 			return true;
 		}
@@ -47,8 +47,8 @@ public class GameRoom {
 		for (int i = 0; i < getNumberOfQuestions(); i++) {
 			roomQuestions.add(qGenerator.generateQuestion());
 		}
-		playerOne.start();
-		playerTwo.start();
+		getPlayerOne().start();
+		getPlayerTwo().start();
 	}
 
 	public int getNumberOfQuestions() {
@@ -77,5 +77,25 @@ public class GameRoom {
 
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
+	}
+	
+	public Question getCurrentQuestion() {
+		return roomQuestions.get(questionNumber % 2); //modulo 2 because both players increment the questionNumber
+	}
+
+	public Player getPlayerOne() {
+		return playerOne;
+	}
+
+	public void setPlayerOne(Player playerOne) {
+		this.playerOne = playerOne;
+	}
+
+	public Player getPlayerTwo() {
+		return playerTwo;
+	}
+
+	public void setPlayerTwo(Player playerTwo) {
+		this.playerTwo = playerTwo;
 	}
 }

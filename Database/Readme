@@ -1,0 +1,6 @@
+"countries" table contains information about countries.
+Engine MyISAM was modified with InnoDB.
+
+Table was Generated using this library:
+	- https://github.com/peric/GetCountries
+	- http://peric.github.io/GetCountries/

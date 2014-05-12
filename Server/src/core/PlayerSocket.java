@@ -21,6 +21,8 @@ public class PlayerSocket {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			close();
+			System.exit(1);
 		}
 	}
 	
@@ -30,9 +32,9 @@ public class PlayerSocket {
 			response = reader.readLine();
 		} catch (SocketException se) {
 			response = "TIMEOUT";
-		}catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return response;
 	}
@@ -40,11 +42,12 @@ public class PlayerSocket {
     public void writeMessage(String message) {
         try {
 			writer.write(message);
+			writer.write('\n');
 			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}   
+			//e.printStackTrace();
+		}
     }
 
 	public Socket getSocket() {

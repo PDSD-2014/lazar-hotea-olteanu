@@ -35,15 +35,20 @@ public class Server {
 		gameRooms.add(new GameRoom(0)); //create the first room
 		while(true) {
 			PlayerSocket playerSocket = new PlayerSocket(serverSocket.accept());
+			System.out.println("Player added");
 			String authMessage = playerSocket.readMessage();
+			System.out.println("AUTH message received");
 			if (authMessage.startsWith(MessageType.AUTH)) {
 				String userName = authMessage.substring(MessageType.AUTH.length());
 				if (users.contains(userName)) {
 					playerSocket.writeMessage(MessageType.NACK);
-					//playerSocket.close(); //FIXME not sure if I should close the connection. 
+					playerSocket.close(); //FIXME not sure if I should close the connection.
+					//FIXME it should wait for another message of AUTH or generate a valid username
+					continue;
 				}
 				playerSocket.writeMessage(MessageType.ACK);
 				users.add(userName);
+				System.out.println ("User " + userName + " connected");
 				Score userScore;
 				if (scores.containsKey(userName)) {
 					userScore = scores.get(userName);
@@ -57,10 +62,13 @@ public class Server {
 					lastRoom.addPlayer(player);
 					player.setGameRoom(lastRoom);
 					if (lastRoom.isFull()) {
-						if (player == lastRoom.getPlayerOne())
+						if (player == lastRoom.getPlayerOne()) {
 							player.setOpponent(lastRoom.getPlayerTwo());
-						else
+							lastRoom.getPlayerTwo().setOpponent(player);
+						} else {
 							player.setOpponent(lastRoom.getPlayerOne());
+							lastRoom.getPlayerOne().setOpponent(player);
+						}
 						lastRoom.startGame();
 					}
 				} else {

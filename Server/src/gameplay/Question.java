@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import utils.GameInfo;
-
 public class Question {
 	private String question;
 	private ArrayList<String> variants;
@@ -35,27 +33,27 @@ public class Question {
 		return new Question(question, variants, solution);
 	}
 
-	String getQuestion() {
+	public String getQuestion() {
 		return question;
 	}
 
-	void setQuestion(String question) {
+	public void setQuestion(String question) {
 		this.question = question;
 	}
 
-	ArrayList<String> getVariants() {
+	public ArrayList<String> getVariants() {
 		return variants;
 	}
 
-	void setVariants(ArrayList<String> variants) {
+	public void setVariants(ArrayList<String> variants) {
 		this.variants = variants;
 	}
 
-	String getSolution() {
+	public String getSolution() {
 		return solution;
 	}
 
-	void setSolution(String correctAnswer) {
+	public void setSolution(String correctAnswer) {
 		this.solution = correctAnswer;
 	}
 	

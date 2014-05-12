@@ -1,5 +1,6 @@
 package utils;
 
+
 import org.json.simple.*;
 
 
@@ -13,7 +14,7 @@ public class GameInfo {
 	public GameInfo(int roomId, String playerOne, String playerTwo) {
 		this.setRoomId(roomId);
 		this.setPlayerOne(playerOne);
-		this.setPlayerTwo(playerOne);
+		this.setPlayerTwo(playerTwo);
 		this.setPlayerOneScore(0);
 		this.setPlayerTwoScore(0);
 	}
@@ -29,11 +30,19 @@ public class GameInfo {
 		if (!obj.containsKey("roomId") || !obj.containsKey("playerOne") || !obj.containsKey("playerTwo"))
 			return null;
 		
-		roomId = (int)obj.get("roomId");
+		roomId = Integer.valueOf((obj.get("roomId").toString()));
 		playerOne = (String)obj.get("playerOne");
 		playerTwo = (String)obj.get("playerTwo");
 		
 		return new GameInfo(roomId, playerOne, playerTwo);
+	}
+	
+	public static int safeLongToInt(long l) {
+	    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+	        throw new IllegalArgumentException
+	            (l + " cannot be cast to int without changing its value.");
+	    }
+	    return (int) l;
 	}
 	
 	public int getRoomId() {

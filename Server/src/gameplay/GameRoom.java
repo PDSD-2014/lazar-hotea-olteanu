@@ -80,6 +80,7 @@ public class GameRoom {
 	}
 	
 	public Question getCurrentQuestion() {
+		System.out.println("Get question number " + (questionNumber % 2));
 		return roomQuestions.get(questionNumber % 2); //modulo 2 because both players increment the questionNumber
 	}
 

@@ -17,6 +17,7 @@ public class Client extends Thread {
 	private boolean keepAlive;
 	
 	public Client() {
+		keepAlive = true;
 		try {
 			player = new PlayerSocket(new Socket(HOST, PORT));
 		} catch (IOException e) {

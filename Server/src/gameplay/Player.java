@@ -62,9 +62,10 @@ public class Player extends Thread {
                 		return;
                 	} else {
                 		connection.writeMessage(MessageType.QUESTION + gameRoom.getCurrentQuestion().JSONToString());
+                		gameRoom.incQuestionNumber(); //go to the next question
+                		qCounter += 1;
                 	}
                 	
-                	qCounter += 1;
                 	state = PlayerState.RESPONSE_STATE;
                 	break;
             	case RESPONSE_STATE:

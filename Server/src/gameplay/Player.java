@@ -128,7 +128,6 @@ public class Player extends Thread {
         } catch (IOException e) {
         } finally {
             opponent.announceStop();
-            System.out.println("EXIIXIIX");
         	this.connection.close();
         }
         

@@ -23,17 +23,17 @@ public class Player extends Thread {
 		this.setConnection(connection);
 		this.setUserName(name);
 		this.setScore(score);
-		this.gameInfo = new GameInfo(0, name, null);
 		this.state = PlayerState.START_GAME;
 		this.keepAlive = true;
 	}
 	
 	public void run() {
 		int qCounter = 0;
+		Question question = null;
 		
         try {        	
         	//TODO Repeatedly get commands from the client and process them
-            while (keepAlive) {
+            while (keepAlive) {    	
             	switch (this.state) {
             	case START_GAME:
             		if (connection.getSocket().isOutputShutdown()) {
@@ -61,8 +61,8 @@ public class Player extends Thread {
                 		stopProcess();
                 		return;
                 	} else {
-                		connection.writeMessage(MessageType.QUESTION + gameRoom.getCurrentQuestion().JSONToString());
-                		gameRoom.incQuestionNumber(); //go to the next question
+                		question = gameRoom.getQuestionNumber(qCounter);
+                		connection.writeMessage(MessageType.QUESTION + question.JSONToString());
                 		qCounter += 1;
                 	}
                 	
@@ -101,7 +101,8 @@ public class Player extends Thread {
                 			state = PlayerState.RESPONSE_STATE;
                 		} else {
                 			//TODO 04: update the score
-                			if (gameRoom.getCurrentQuestion().getSolution().equals(response.substring(MessageType.QUESTION_ANSWER.length()))) {
+                			System.out.println("Solution : " + question.getSolution() + " Answer " + response.substring(MessageType.QUESTION_ANSWER.length()) + " Player " + userName);
+                			if (question.getSolution().equals(response.substring(MessageType.QUESTION_ANSWER.length()))) {
                 				gameInfo.incScoreOfPlayer(userName);
                 				score.addScore(1);
                 			}
@@ -110,12 +111,15 @@ public class Player extends Thread {
                 	}
             		break;
             	case RESULT_STATE:
-            		//TODO 05: send the result
+            		//TODO 05.1: wait for opponent's answer
+            		
+            		//TODO 05.2: send the result
             		if (connection.getSocket().isOutputShutdown()) {
             			System.err.println("START_GAME ERROR");
             			stopProcess();
             			return;
             		}
+            		System.out.println("--- " + gameInfo);
             		connection.writeMessage(MessageType.QUESTION_RESPONSE + gameInfo.JSONToString());
             		//TODO 06: getNextQuestion
             		gameRoom.incQuestionNumber();
@@ -149,7 +153,6 @@ public class Player extends Thread {
 	
 	public void setOpponent(Player opponent) {
         this.opponent = opponent;
-        this.gameInfo.setPlayerTwo(opponent.getUserName());
     }
 
 	public PlayerSocket getConnection() {
@@ -182,7 +185,10 @@ public class Player extends Thread {
 
 	public void setGameRoom(GameRoom gameRoom) {
 		this.gameRoom = gameRoom;
-		this.gameInfo.setRoomId(gameRoom.getRoomId());
+	}
+	
+	public void setGameInfo(GameInfo gameInfo) {
+		this.gameInfo = gameInfo;
 	}
 
 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 
+import utils.GameInfo;
 import utils.MessageType;
 import db.*;
 import gameplay.*;
@@ -62,6 +63,9 @@ public class Server {
 					lastRoom.addPlayer(player);
 					player.setGameRoom(lastRoom);
 					if (lastRoom.isFull()) {
+						GameInfo gameInfo = new GameInfo(lastRoom.getRoomId(), 
+								lastRoom.getPlayerOne().getUserName(),
+								lastRoom.getPlayerTwo().getUserName());
 						if (player == lastRoom.getPlayerOne()) {
 							player.setOpponent(lastRoom.getPlayerTwo());
 							lastRoom.getPlayerTwo().setOpponent(player);
@@ -69,6 +73,8 @@ public class Server {
 							player.setOpponent(lastRoom.getPlayerOne());
 							lastRoom.getPlayerOne().setOpponent(player);
 						}
+						lastRoom.getPlayerOne().setGameInfo(gameInfo);
+						lastRoom.getPlayerTwo().setGameInfo(gameInfo);
 						lastRoom.startGame();
 					}
 				} else {

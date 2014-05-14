@@ -1,11 +1,14 @@
 package core;
-import utils.GameInfo;
-import utils.MessageType;
+
+
 import gameplay.Question;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Random;
+
+import utils.GameInfo;
+import utils.MessageType;
 
 public class Client extends Thread {
 	final String TAG = "ClientSocket";
@@ -124,7 +127,7 @@ public class Client extends Thread {
 			}
 			//TODO 05: read the game info and print the result
 			if (msg.startsWith(MessageType.QUESTION_RESPONSE)) {
-				System.out.println("Received game info");
+				System.out.println("Received game info " + msg.substring(MessageType.QUESTION_RESPONSE.length()));
 				GameInfo gameInfo = GameInfo.generateObject(msg.substring(MessageType.QUESTION_RESPONSE.length()));
 				System.out.println(gameInfo.toString());
 			} else {

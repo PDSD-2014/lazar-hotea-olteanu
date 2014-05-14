@@ -23,18 +23,27 @@ public class GameInfo {
 		int roomId;
 		String playerOne;
 		String playerTwo;
-		String playerOneScore;
-		String playerTwoScore;
+		int playerOneScore = 0;
+		int playerTwoScore = 0;
+		GameInfo result;
+		
 		JSONObject obj = (JSONObject)JSONValue.parse(json);
 		
-		if (!obj.containsKey("roomId") || !obj.containsKey("playerOne") || !obj.containsKey("playerTwo"))
+		if (!obj.containsKey("roomId") || !obj.containsKey("playerOne") || !obj.containsKey("playerTwo")
+				|| !obj.containsKey("playerOneScore") || !obj.containsKey("playerTwoScore"))
 			return null;
 		
 		roomId = Integer.valueOf((obj.get("roomId").toString()));
 		playerOne = (String)obj.get("playerOne");
 		playerTwo = (String)obj.get("playerTwo");
+		playerOneScore = Integer.valueOf((obj.get("playerOneScore")).toString());
+		playerTwoScore = Integer.valueOf((obj.get("playerTwoScore")).toString());
 		
-		return new GameInfo(roomId, playerOne, playerTwo);
+		result = new GameInfo(roomId, playerOne, playerTwo);
+		result.setPlayerOneScore(playerOneScore);
+		result.setPlayerTwoScore(playerTwoScore);
+		
+		return result;
 	}
 	
 	public static int safeLongToInt(long l) {

@@ -18,6 +18,7 @@ public class Player extends Thread {
 	private int INF = 0;
 	private PlayerState state;
 	private boolean keepAlive;
+	private boolean waitForOpponent;
 	
 	public Player(PlayerSocket connection, String name, Score score) {
 		this.setConnection(connection);
@@ -25,6 +26,7 @@ public class Player extends Thread {
 		this.setScore(score);
 		this.state = PlayerState.START_GAME;
 		this.keepAlive = true;
+		this.waitForOpponent = true;
 	}
 	
 	public void run() {
@@ -33,7 +35,7 @@ public class Player extends Thread {
 		
         try {        	
         	//TODO Repeatedly get commands from the client and process them
-            while (keepAlive) {    	
+            while (keepAlive) {
             	switch (this.state) {
             	case START_GAME:
             		if (connection.getSocket().isOutputShutdown()) {
@@ -111,9 +113,14 @@ public class Player extends Thread {
                 	}
             		break;
             	case RESULT_STATE:
-            		//TODO 05.1: wait for opponent's answer
-            		
-            		//TODO 05.2: send the result
+            		//TODO 05.1: announce the opponent that you reached this point
+            		opponent.stopWaiting();
+            		//TODO 05.2: wait for opponent's answer
+            		while(waitForOpponent){	//WORST SYNCHRONIZATION EVER:))))
+            			opponent.stopWaiting();
+            		};
+            
+            		//TODO 05.3: send the result
             		if (connection.getSocket().isOutputShutdown()) {
             			System.err.println("START_GAME ERROR");
             			stopProcess();
@@ -121,6 +128,7 @@ public class Player extends Thread {
             		}
             		System.out.println("--- " + gameInfo);
             		connection.writeMessage(MessageType.QUESTION_RESPONSE + gameInfo.JSONToString());
+            		System.out.println(gameInfo.JSONToString());
             		//TODO 06: getNextQuestion
             		gameRoom.incQuestionNumber();
             		state = PlayerState.QUESTION_STATE;
@@ -189,6 +197,18 @@ public class Player extends Thread {
 	
 	public void setGameInfo(GameInfo gameInfo) {
 		this.gameInfo = gameInfo;
+	}
+
+	public boolean isWaitForOpponent() {
+		return waitForOpponent;
+	}
+
+	public void setWaitForOpponent(boolean waitForOpponent) {
+		this.waitForOpponent = waitForOpponent;
+	}
+	
+	public void stopWaiting() {
+		this.waitForOpponent = false;
 	}
 
 }

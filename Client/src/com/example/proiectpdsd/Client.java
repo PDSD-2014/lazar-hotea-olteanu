@@ -10,7 +10,6 @@ import java.util.Random;
 
 import utils.GameInfo;
 import utils.MessageType;
-
 public class Client extends Thread {
 	final String TAG = "ClientSocket";
 	

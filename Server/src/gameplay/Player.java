@@ -3,6 +3,7 @@ package gameplay;
 import utils.GameInfo;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import utils.MessageType;
 import core.PlayerSocket;
@@ -79,8 +80,9 @@ public class Player extends Thread {
                 		stopProcess();
                 		return;
 					}
-            		String response = connection.readMessage();
-            		//remove the timer
+					String response = connection.readMessage();
+            		
+					//remove the timer
                 	connection.getSocket().setSoTimeout(INF);
                 	
                 	if (response.equals("TIMEOUT")) {
@@ -89,10 +91,14 @@ public class Player extends Thread {
                 			stopProcess();
                     		return;
                 		} else {
+                			System.out.println("TIMEOUT: Counter value: " + qCounter);
                 			connection.writeMessage(MessageType.TIMEOUT);
                 		}
+                		// FIXME: After TIMEOUT, we should send a RESULT_STATE?
+                		state = PlayerState.RESULT_STATE;
                 	} else {
                 		//TODO 03.2: else check the answer
+                		System.out.println("____________ Counter value: " + qCounter);
                 		if (!response.startsWith(MessageType.QUESTION_ANSWER)) {
                     		if (connection.getSocket().isOutputShutdown()) {
                     			System.err.println("QUESTION_ANSWER ERROR");
@@ -153,7 +159,7 @@ public class Player extends Thread {
 	}
 	
 	public void stopProcess() {
-		System.out.println("Player " + userName + " exited");
+		System.out.println("Player " + userName + " exited _test?_");
 		opponent.announceStop();
 		keepAlive = false;
 		connection.close();

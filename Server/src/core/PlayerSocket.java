@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class PlayerSocket {
 	private Socket socket;
@@ -30,11 +31,13 @@ public class PlayerSocket {
 		String response = null;
 		try {
 			response = reader.readLine();
-		} catch (SocketException se) {
+		} catch (SocketTimeoutException se) {
 			response = "TIMEOUT";
+			System.out.println("________" + response + "_________________");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
+			System.out.println("________" + "IOException null???" + "_________________" + e);
 		}
 		return response;
 	}

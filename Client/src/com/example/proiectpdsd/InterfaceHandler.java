@@ -1,26 +1,71 @@
 package com.example.proiectpdsd;
 
+import java.util.Currency;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.app.Activity;
 /*
  * Radical din pi
  */
 public class InterfaceHandler {
 	public Activity activity;
 	int question_counter;
+	Button answerSelected;
+	Drawable defaultButtonColour;
+	
 	public InterfaceHandler(Activity _activity) {
 		this.activity = _activity;
+	}
+	public void InitInterface() {
+		Button b;
+		b = (Button)activity.findViewById(R.id.buttonA);
+		AddListenerButton(b);
+		b = (Button)activity.findViewById(R.id.buttonB);
+		AddListenerButton(b);
+		b = (Button)activity.findViewById(R.id.buttonC);
+		AddListenerButton(b);
+		b = (Button)activity.findViewById(R.id.buttonD);
+		AddListenerButton(b);
+		defaultButtonColour = b.getBackground();
+	}
+	void AddListenerButton(final Button b) {
+		b.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				SetSelectedAnswer(b.getId());
+				
+			}
+		});
+	}
+	public void SetSelectedAnswer(int id) {
+		Button b = (Button)activity.findViewById(id);
+		if (answerSelected != null) {
+			answerSelected.setBackgroundDrawable(defaultButtonColour);
+		}
+			answerSelected = b;
+			answerSelected.setBackgroundColor(Color.BLUE);
+		
+	}
+	public Button GetSelectedAnswer() {
+		return answerSelected;
+	}
+	public String GetSelectedAnswerString() {
+		return answerSelected.getText().toString();
 	}
 	public void SetQuestion(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.intrebare);
 		t.setText(str);
 	}
 	public void SetAnswerA(String str) {
-		Button b = (Button)activity.findViewById(R.id.startGame);
+		Button b = (Button)activity.findViewById(R.id.buttonA);
 		b.setText(str);
 	}
 	public void SetAnswerB(String str) {

@@ -53,7 +53,7 @@
         android:text="Intrebare" />
 
     <Button
-        android:id="@+id/startGame"
+        android:id="@+id/buttonA"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,8 +68,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/startGame"
-        android:layout_below="@+id/startGame"
+        android:layout_alignLeft="@+id/buttonA"
+        android:layout_below="@+id/buttonA"
         android:layout_marginTop="14dp"
         android:text="Button" />
 
@@ -78,8 +78,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/startGame"
-        android:layout_alignBottom="@+id/startGame"
+        android:layout_alignBaseline="@+id/buttonA"
+        android:layout_alignBottom="@+id/buttonA"
         android:layout_alignParentRight="true"
         android:layout_marginRight="40dp"
         android:text="Button" />

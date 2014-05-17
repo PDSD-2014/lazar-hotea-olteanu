@@ -9,9 +9,7 @@ public class PlayActivity extends Activity {
 	InterfaceHandler ih = new InterfaceHandler(this); ; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d("dwadaw", "dwadwaad");
-		
-		ih.SetCountDownTimer();
+		ih.InitInterface();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 	

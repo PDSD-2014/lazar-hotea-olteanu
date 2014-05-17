@@ -18,4 +18,8 @@ Allow Client to connect to remote MySQL Server
 GRANT ALL ON pdsd.* to 'user'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 
+Allow Incoming Traffic on Server's Ports 
+sudo iptables -A INPUT -p tcp --dport 9999 -j ACCEPT
+
+sudo iptables -A OUTPUT -p tcp --dport 9999 -j ACCEPT
 TODO

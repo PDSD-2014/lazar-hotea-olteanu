@@ -45,10 +45,22 @@ public class GameRoom {
 	
 	public void startGame() {
 		for (int i = 0; i < getNumberOfQuestions(); i++) {
-			roomQuestions.add(qGenerator.generateQuestion());
+			Question q = qGenerator.generateQuestion();
+			if(questionNotAdded(q))
+				roomQuestions.add(qGenerator.generateQuestion());
 		}
 		getPlayerOne().start();
 		getPlayerTwo().start();
+	}
+	
+	private Boolean questionNotAdded(Question q) {
+		int i;
+		for(i = 0 ; i < roomQuestions.size() ; i++) {
+			if(q.GetInformationType() == roomQuestions.get(i).GetInformationType() && 
+					q.getSolution() == roomQuestions.get(i).getSolution())
+				return false;
+		}
+		return true;
 	}
 
 	public int getNumberOfQuestions() {

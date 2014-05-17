@@ -1,5 +1,6 @@
 package gameplay;
 
+import java.awt.Window.Type;
 import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
@@ -10,17 +11,20 @@ public class Question {
 	private ArrayList<String> variants;
 	private String solution;
 	private String extra = "ABCD";
+	private InformationType type;
 	
-	public Question(String question, ArrayList<String> variants, String solution) {
+	public Question(String question, ArrayList<String> variants, String solution, InformationType type) {
 		this.setQuestion(question);
 		this.setVariants(variants);
 		this.setSolution(solution);
+		this.SetInformationType(type);
 	}
 	
 	public static Question generateObject(String json) {
 		String question;
 		ArrayList<String> variants;
 		String solution;
+		InformationType infotype;
 		JSONObject obj = (JSONObject)JSONValue.parse(json);
 		
 		if (!obj.containsKey("question") || !obj.containsKey("variants") || !obj.containsKey("solution"))
@@ -29,8 +33,9 @@ public class Question {
 		question = (String)obj.get("question");
 		variants = (ArrayList<String>)obj.get("variants");
 		solution = (String)obj.get("solution");
+		infotype = (InformationType)obj.get("informationType");
 		
-		return new Question(question, variants, solution);
+		return new Question(question, variants, solution, infotype);
 	}
 
 	public String getQuestion() {
@@ -49,6 +54,12 @@ public class Question {
 		this.variants = variants;
 	}
 
+	public void SetInformationType(InformationType type) {
+		this.type = type;
+	}
+	public InformationType GetInformationType() {
+		return type;
+	}
 	public String getSolution() {
 		return solution;
 	}
@@ -81,7 +92,7 @@ public class Question {
 		obj.put("question", question);
 		obj.put("variants", variants);
 		obj.put("solution", solution);
-		
+		obj.put("informationType", type);
 		return obj.toString();
 	}
 }

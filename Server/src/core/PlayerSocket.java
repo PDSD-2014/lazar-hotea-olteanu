@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class PlayerSocket {
 	private Socket socket;
@@ -20,21 +21,33 @@ public class PlayerSocket {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			close();
+			System.exit(1);
 		}
 	}
 	
-	public String readMessage() throws IOException {
-		StringBuffer message = new StringBuffer();
-        String input;
-		while ((input = reader.readLine()) != null) {
-            message.append(input);
-        }
-		return message.toString();
+	public String readMessage() {
+		String response = null;
+		try {
+			response = reader.readLine();
+		} catch (SocketException se) {
+			response = "TIMEOUT";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		return response;
 	}
 	
-    public void writeMessage(String message) throws IOException {
-        writer.write(message);
-        writer.flush();
+    public void writeMessage(String message) {
+        try {
+			writer.write(message);
+			writer.write('\n');
+			writer.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
     }
 
 	public Socket getSocket() {
@@ -43,5 +56,17 @@ public class PlayerSocket {
 
 	public void setSocket(Socket socket) {
 		this.socket = socket;
+	}
+	
+	public void close() {	
+		try {
+			this.reader.close();
+			this.writer.close();
+			this.socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

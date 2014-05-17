@@ -1,21 +1,30 @@
 package core;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 
+import utils.GameInfo;
+import utils.MessageType;
 import db.*;
 import gameplay.*;
 
 public class Server {
 	private ServerSocket serverSocket;
+	private HashMap<String, Score> scores;
+	private List<String> users;
+	private List<GameRoom> gameRooms;
 	private int port;
 	
 	public Server(int port) {
 		this.port = port;
+		scores = new HashMap<String, Score>();
+		users = new ArrayList<String>();
+		gameRooms = new ArrayList<GameRoom>();
 	}
 
 	public void start() throws IOException {
@@ -23,21 +32,56 @@ public class Server {
 		serverSocket = new ServerSocket(port);
 
 		//Listen for clients. Block till one connects
-		System.out.println("Waiting for players...");
-		ArrayList<GameRoom> gameRooms = new ArrayList<GameRoom>();
-		gameRooms.add(new GameRoom()); //create the first room
+		System.out.println("Waiting for players...");		
+		gameRooms.add(new GameRoom(0)); //create the first room
 		while(true) {
-			Socket client  = serverSocket.accept();
-			PlayerSocket player = new PlayerSocket(client);
-			GameRoom lastRoom = gameRooms.get(gameRooms.size() - 1);
-			if (!lastRoom.isFull()) {
-				lastRoom.addPlayer(new Player("N/A", "N/A", player));
-				if (lastRoom.isFull())
-					lastRoom.startGame();
-			} else {
-				GameRoom newRoom = new GameRoom();
-				newRoom.addPlayer(new Player("N/A", "N/A", player));
-				gameRooms.add(newRoom);
+			PlayerSocket playerSocket = new PlayerSocket(serverSocket.accept());
+			System.out.println("Player added");
+			String authMessage = playerSocket.readMessage();
+			System.out.println("AUTH message received");
+			if (authMessage.startsWith(MessageType.AUTH)) {
+				String userName = authMessage.substring(MessageType.AUTH.length());
+				if (users.contains(userName)) {
+					playerSocket.writeMessage(MessageType.NACK);
+					playerSocket.close(); //FIXME not sure if I should close the connection.
+					//FIXME it should wait for another message of AUTH or generate a valid username
+					continue;
+				}
+				playerSocket.writeMessage(MessageType.ACK);
+				users.add(userName);
+				System.out.println ("User " + userName + " connected");
+				Score userScore;
+				if (scores.containsKey(userName)) {
+					userScore = scores.get(userName);
+				} else {
+					userScore = new Score(userName);
+					scores.put(userName, userScore);
+				}
+				GameRoom lastRoom = gameRooms.get(gameRooms.size() - 1);
+				if (!lastRoom.isFull()) {
+					Player player = new Player(playerSocket, userName, userScore);
+					lastRoom.addPlayer(player);
+					player.setGameRoom(lastRoom);
+					if (lastRoom.isFull()) {
+						GameInfo gameInfo = new GameInfo(lastRoom.getRoomId(), 
+								lastRoom.getPlayerOne().getUserName(),
+								lastRoom.getPlayerTwo().getUserName());
+						if (player == lastRoom.getPlayerOne()) {
+							player.setOpponent(lastRoom.getPlayerTwo());
+							lastRoom.getPlayerTwo().setOpponent(player);
+						} else {
+							player.setOpponent(lastRoom.getPlayerOne());
+							lastRoom.getPlayerOne().setOpponent(player);
+						}
+						lastRoom.getPlayerOne().setGameInfo(gameInfo);
+						lastRoom.getPlayerTwo().setGameInfo(gameInfo);
+						lastRoom.startGame();
+					}
+				} else {
+					GameRoom newRoom = new GameRoom(gameRooms.size());
+					newRoom.addPlayer(new Player(playerSocket, userName, userScore));
+					gameRooms.add(newRoom);
+				}
 			}
 		}
 	}
@@ -46,7 +90,17 @@ public class Server {
 		DBConnection db = new DBConnection(url, user, password);
 		ArrayList<CountryInformation> countriesInfo = 
 				(ArrayList<CountryInformation>) db.getCountriesInformation();
-		QuestionGenerator.getInstance().setInfo(countriesInfo);
+		QuestionGenerator.getInstance().setInfo(countriesInfo);	
+	}
+	
+	public void closeConnection() {
+		try {
+			if (serverSocket != null)
+				serverSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 		
 	public static void main(String[] args) {
@@ -65,6 +119,7 @@ public class Server {
 					prop.getProperty("dbuser"), prop.getProperty("dbpassword"));
 			server.start();
 		} catch (Exception e) {
+			server.closeConnection();
 			e.printStackTrace();
 			if (input != null) {
 				try {

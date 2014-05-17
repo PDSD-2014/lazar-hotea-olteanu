@@ -11,7 +11,7 @@ public class Question {
 	private ArrayList<String> variants;
 	private String solution;
 	private String extra = "ABCD";
-	private InformationType type;
+	private String type;
 	
 	public Question(String question, ArrayList<String> variants, String solution, InformationType type) {
 		this.setQuestion(question);
@@ -55,10 +55,10 @@ public class Question {
 	}
 
 	public void SetInformationType(InformationType type) {
-		this.type = type;
+		this.type = type.toString();
 	}
-	public InformationType GetInformationType() {
-		return type;
+	public String GetInformationType() {
+		return type.toString();
 	}
 	public String getSolution() {
 		return solution;

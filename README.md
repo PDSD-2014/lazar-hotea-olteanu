@@ -21,5 +21,8 @@ FLUSH PRIVILEGES;
 Allow Incoming Traffic on Server's Ports 
 sudo iptables -A INPUT -p tcp --dport 9999 -j ACCEPT
 
+Allow Outgoing Traffic on Server's Ports
 sudo iptables -A OUTPUT -p tcp --dport 9999 -j ACCEPT
+
+
 TODO

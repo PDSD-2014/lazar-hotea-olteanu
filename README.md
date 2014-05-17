@@ -25,4 +25,6 @@ Allow Outgoing Traffic on Server's Ports :
 sudo iptables -A OUTPUT -p tcp --dport 9999 -j ACCEPT
 
 
-TODO
+###How to start a client
+
+java -cp ../../json-simple-1.1.1.jar:. com.example.proiectpdsd.Client

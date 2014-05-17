@@ -13,7 +13,7 @@ public class Question {
 	private String extra = "ABCD";
 	private String type;
 	
-	public Question(String question, ArrayList<String> variants, String solution, InformationType type) {
+	public Question(String question, ArrayList<String> variants, String solution, String type) {
 		this.setQuestion(question);
 		this.setVariants(variants);
 		this.setSolution(solution);
@@ -24,7 +24,7 @@ public class Question {
 		String question;
 		ArrayList<String> variants;
 		String solution;
-		InformationType infotype;
+		String infotype;
 		JSONObject obj = (JSONObject)JSONValue.parse(json);
 		
 		if (!obj.containsKey("question") || !obj.containsKey("variants") || !obj.containsKey("solution"))
@@ -33,7 +33,7 @@ public class Question {
 		question = (String)obj.get("question");
 		variants = (ArrayList<String>)obj.get("variants");
 		solution = (String)obj.get("solution");
-		infotype = (InformationType)obj.get("informationType");
+		infotype = (String)obj.get("informationType");
 		
 		return new Question(question, variants, solution, infotype);
 	}
@@ -54,8 +54,8 @@ public class Question {
 		this.variants = variants;
 	}
 
-	public void SetInformationType(InformationType type) {
-		this.type = type.toString();
+	public void SetInformationType(String type) {
+		this.type = type;
 	}
 	public String GetInformationType() {
 		return type.toString();

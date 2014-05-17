@@ -81,7 +81,7 @@ public class QuestionGenerator {
 			variants.remove(pos);
 		}
 		
-		return new Question(question, variantsAnswers, solution);
+		return new Question(question, variantsAnswers, solution, qtype.toString());
 	}
 
 	public void printCountriesInformation() {

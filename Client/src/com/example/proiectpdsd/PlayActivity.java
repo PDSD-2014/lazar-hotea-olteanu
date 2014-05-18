@@ -8,6 +8,7 @@ import android.view.Menu;
 public class PlayActivity extends Activity {
 	static InterfaceHandler ih;
 	static ClientPlay clientplay;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		

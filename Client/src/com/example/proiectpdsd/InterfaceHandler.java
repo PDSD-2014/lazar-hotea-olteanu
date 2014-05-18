@@ -68,6 +68,7 @@ public class InterfaceHandler {
 				if(canAns) {
 					StopTimer();
 					SetSelectedAnswer(id);
+					canAns = false;
 				}
 				
 			}

@@ -14,10 +14,9 @@ public class InterfaceMainActivity {
 	public InterfaceMainActivity(Activity activity) {
 		this.activity = activity;
 	}
-	public void Init() {
-		Button startButton = (Button)activity.findViewById(R.id.startGame);
+	public void SetProgressBar() {
 		final ProgressBar pb =(ProgressBar)activity.findViewById(R.id.progressBar1);
-		final EditText editText = (EditText)activity.findViewById(R.id.editText1);
+		pb.setVisibility(View.VISIBLE);
 		thPB = new Thread(new Runnable() {
 			int i;
 			@Override
@@ -28,6 +27,28 @@ public class InterfaceMainActivity {
 			}
 		});
 		thPB.start();
+	}
+	public void StopPB() {
+		final ProgressBar pb =(ProgressBar)activity.findViewById(R.id.progressBar1);
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+
+				pb.setVisibility(View.INVISIBLE);
+				
+			}
+		});
+
+		thPB.interrupt();
+		
+	}
+	public void Init() {
+		Button startButton = (Button)activity.findViewById(R.id.startGame);
+		final ProgressBar pb =(ProgressBar)activity.findViewById(R.id.progressBar1);
+		final EditText editText = (EditText)activity.findViewById(R.id.editText1);
+		
 
 		startButton.setOnClickListener(new OnClickListener() {
 			
@@ -41,7 +62,7 @@ public class InterfaceMainActivity {
 					Log.d("lemn","dupa new client");
 					MainActivity.client.start();
 					Log.d("lemn","dupa start");
-					SetVisibilityProgressBar(View.VISIBLE);
+					SetProgressBar();
 					Log.d("lemn","dupa set visible ");
 				
 				}

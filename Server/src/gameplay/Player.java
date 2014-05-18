@@ -66,6 +66,7 @@ public class Player extends Thread {
                 	} else {
                 		question = gameRoom.getQuestionNumber(qCounter);
                 		connection.writeMessage(MessageType.QUESTION + question.JSONToString());
+                		waitForOpponent = true;
                 		qCounter += 1;
                 	}
                 	
@@ -175,6 +176,7 @@ public class Player extends Thread {
 		opponent.announceStop();
 		keepAlive = false;
 		connection.close();
+		
 	}
 	
 	public void setOpponent(Player opponent) {

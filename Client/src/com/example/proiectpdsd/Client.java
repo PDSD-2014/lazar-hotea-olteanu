@@ -26,6 +26,7 @@ public class Client extends Thread {
 				// Get and wrap its input stream for reading the response.
 	}
 	void StartPlayActivity() {
+		MainActivity.interfaceHandler.StopPB();
 		Intent intent = new Intent(MainActivity.interfaceHandler.activity.getBaseContext(),PlayActivity.class);
 		MainActivity.interfaceHandler.activity.startActivity(intent);
 
@@ -153,6 +154,7 @@ public class Client extends Thread {
 	public void stopProcess() {
 		keepAlive = false;
 		player.close();
+		PlayActivity.ih.activity.finish();
 	}
 	
 	public static void main(String[] args) {

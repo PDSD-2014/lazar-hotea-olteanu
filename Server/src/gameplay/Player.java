@@ -15,7 +15,7 @@ public class Player extends Thread {
 	private Score score;
 	private GameRoom gameRoom;
 	private GameInfo gameInfo;
-	private int TIMEOUT = 10000;
+	private int TIMEOUT = 15000;
 	private int INF = 0;
 	private PlayerState state;
 	private boolean keepAlive;
@@ -91,14 +91,13 @@ public class Player extends Thread {
                 			stopProcess();
                     		return;
                 		} else {
-                			System.out.println("TIMEOUT: Counter value: " + qCounter);
-                			connection.writeMessage(MessageType.TIMEOUT);
+                			System.out.println("______TIMEOUT: Counter value: " + qCounter + "________");
+                			//connection.writeMessage(MessageType.TIMEOUT);
                 		}
                 		// FIXME: After TIMEOUT, we should send a RESULT_STATE?
                 		state = PlayerState.RESULT_STATE;
                 	} else {
                 		//TODO 03.2: else check the answer
-                		System.out.println("____________ Counter value: " + qCounter);
                 		if (!response.startsWith(MessageType.QUESTION_ANSWER)) {
                     		if (connection.getSocket().isOutputShutdown()) {
                     			System.err.println("QUESTION_ANSWER ERROR");
@@ -120,11 +119,18 @@ public class Player extends Thread {
             		break;
             	case RESULT_STATE:
             		//TODO 05.1: announce the opponent that you reached this point
+            		System.out.println("1--- " + userName + " " + waitForOpponent + " ------------" + opponent.waitForOpponent + " ----");
             		opponent.stopWaiting();
             		//TODO 05.2: wait for opponent's answer
+            		System.out.println("2-------- " + userName + " " + waitForOpponent + " ------------" + opponent.waitForOpponent + " ----");
+            		
+            		
             		while(waitForOpponent){	//WORST SYNCHRONIZATION EVER:))))
             			opponent.stopWaiting();
             		};
+            		
+            		System.out.println("3-------- " + userName + " " + waitForOpponent + " ------------" + opponent.waitForOpponent + " ----");
+            		
             
             		//TODO 05.3: send the result
             		if (connection.getSocket().isOutputShutdown()) {
@@ -135,7 +141,13 @@ public class Player extends Thread {
             		System.out.println("--- " + gameInfo);
             		connection.writeMessage(MessageType.QUESTION_RESPONSE + gameInfo.JSONToString());
             		System.out.println(gameInfo.JSONToString());
+            		
             		//TODO 06: getNextQuestion
+            		try {
+        				Thread.sleep(5000);
+        				System.out.println("______Wait 5 sec. for clients in order to process data____" + userName + " ");
+        			} catch (InterruptedException e) {	
+        			}
             		gameRoom.incQuestionNumber();
             		state = PlayerState.QUESTION_STATE;
             		break;

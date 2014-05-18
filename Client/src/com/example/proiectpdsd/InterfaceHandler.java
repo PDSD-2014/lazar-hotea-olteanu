@@ -6,6 +6,7 @@ import java.util.Currency;
 
 import utils.GameInfo;
 import utils.MessageType;
+import android.R.integer;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,16 @@ public class InterfaceHandler {
 		AddListenerButton(b);
 		defaultButtonColour = b.getBackground();
 	
+		b = (Button)activity.findViewById(R.id.buttonExitPlay);
+		b.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MainActivity.client.stopProcess();
+			}
+		});
+		
 	}
 	void AddListenerButton( Button b) {
 		if(b==null) {
@@ -113,23 +124,35 @@ public class InterfaceHandler {
 	
 	public void SetMyName(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.myname);
-		if(t==null)
-			Log.d("null","mytextname e null");
-		if(str==null)
-			Log.d("null","str e null");
 		t.setText(str);
+	}
+	public String GetMyName() {
+		TextView t = (TextView)activity.findViewById(R.id.myname);
+		return t.getText().toString();
 	}
 	public void SetOppName(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.oppname);
 		t.setText(str);
 	}
+	public String GetOppName() {
+		TextView t = (TextView)activity.findViewById(R.id.myname);
+		return t.getText().toString();
+	}
 	public void SetMyPoints(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.mypoints);
 		t.setText(str);
 	}
+	public String GetMyPoints() {
+		TextView t = (TextView)activity.findViewById(R.id.mypoints);
+		return t.getText().toString();
+	}
 	public void SetOppPoints(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.opppoints);
 		t.setText(str);
+	}
+	public String GetOppPoints() {
+		TextView t = (TextView)activity.findViewById(R.id.mypoints);
+		return t.getText().toString();
 	}
 	public void SetQuestionCounter(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.question_counter);
@@ -195,7 +218,7 @@ activity.runOnUiThread(new Runnable() {
 				if((millisUntilFinished / 500) %2 == 0 )
 					GetButtonAnswer(currentAns).setBackgroundDrawable(defaultButtonColour);
 				else
-					GetButtonAnswer(currentAns).setBackgroundColor(Color.BLUE);		
+					GetButtonAnswer(currentAns).setBackgroundColor(Color.GREEN);		
 			}
 			
 		
@@ -236,7 +259,75 @@ activity.runOnUiThread(new Runnable() {
 		SetQuestionValue(value);
 		SetCountDownTimer();
 	}
-	
+	public TextView getQuestionTextView() {
+		TextView t = (TextView)activity.findViewById(R.id.intrebare);
+		return t;
+	}
+	public void EndGame()  {
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+
+		Button b = (Button)activity.findViewById(R.id.buttonA);
+		b.setVisibility(View.INVISIBLE);
+		 b = (Button)activity.findViewById(R.id.buttonB);
+		b.setVisibility(View.INVISIBLE);
+		 b = (Button)activity.findViewById(R.id.buttonC);
+		b.setVisibility(View.INVISIBLE);
+		 b = (Button)activity.findViewById(R.id.buttonD);
+		b.setVisibility(View.INVISIBLE);
+		
+		TextView t1 = (TextView)activity.findViewById(R.id.mypoints);
+		TextView t2 = (TextView)activity.findViewById(R.id.opppoints);
+		int myp,oppp;
+		if(GetMyName().equals(Client.myName)) {
+			 myp = Integer.valueOf(t1.getText().toString());
+			 oppp =  Integer.valueOf(t2.getText().toString());
+		}
+		else {
+			 oppp = Integer.valueOf(t1.getText().toString());
+			 myp =  Integer.valueOf(t2.getText().toString());
+
+		}
+		if(myp > oppp)
+			SetQuestion("You won ! Congratulations");
+		if(myp == oppp)
+			SetQuestion("Draw !");
+		if(myp < oppp)
+			SetQuestion("You lost !");
+		
+		
+		
+			long start = 5000;
+			long interval = 500;
+			CountDownTimer t;
+			
+			t = new CountDownTimer(start,interval) {
+				//final 
+				
+				public void onTick(long millisUntilFinished) {
+					Log.d(String.valueOf(millisUntilFinished/500), "da sigur");
+					
+					//((TextView)activity.findViewById(R.id.timer)).setText(String.valueOf(millisUntilFinished/1000));
+					if((millisUntilFinished / 500) %2 == 0 )
+						getQuestionTextView().setBackgroundColor(Color.CYAN);
+					else
+						getQuestionTextView().setBackgroundColor(Color.MAGENTA);
+				}
+				
+			
+				public void onFinish() {
+					getQuestionTextView().setBackgroundColor(Color.CYAN);
+					
+
+				}
+			}.start();
+		
+			
+			}
+		});
+	}
 	public void UpdateQuestion(final Question q) {
 		Log.d("updateq","before setans");
 		
@@ -253,9 +344,9 @@ activity.runOnUiThread(new Runnable() {
 				SetAnswerB(q.getVariants().get(1));
 				SetAnswerC(q.getVariants().get(2));
 				SetAnswerD(q.getVariants().get(3));
-				SetQuestionValue("val:" + String.valueOf(1));
+				SetQuestionValue("QValue:" + String.valueOf(1));
 				question_counter++;
-				SetQuestionCounter(String.valueOf(question_counter));
+				SetQuestionCounter("QNo:" + String.valueOf(question_counter));
 				SetCountDownTimer();
 				
 			}

@@ -10,6 +10,7 @@ import utils.GameInfo;
 import utils.MessageType;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.EditText;
 import core.PlayerSocket;
 
 public class Client extends Thread {
@@ -21,12 +22,14 @@ public class Client extends Thread {
 	public static PlayerSocket player;
 	private boolean keepAlive;
 	static public GameInfo gInfoInitial;
+	static public String myName;
 	public Client() {
 		keepAlive = true;
 				// Get and wrap its input stream for reading the response.
 	}
 	void StartPlayActivity() {
 		MainActivity.interfaceHandler.StopPB();
+		myName = ((EditText)(MainActivity.interfaceHandler.activity.findViewById(R.id.editText1))).getText().toString();
 		Intent intent = new Intent(MainActivity.interfaceHandler.activity.getBaseContext(),PlayActivity.class);
 		MainActivity.interfaceHandler.activity.startActivity(intent);
 
@@ -103,6 +106,14 @@ public class Client extends Thread {
 			msg = player.readMessage();
 			//sanity check
 			if (msg.equals(MessageType.END_GAME) || msg.equals(MessageType.STOP_GAME)) {
+				
+				PlayActivity.ih.EndGame();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				stopProcess();
 				System.out.println("The game stopped");
 				continue;
@@ -130,6 +141,13 @@ public class Client extends Thread {
 			msg = player.readMessage();
 			//sanity check
 			if (msg.equals(MessageType.END_GAME) || msg.equals(MessageType.STOP_GAME)) {
+				PlayActivity.ih.EndGame();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				stopProcess();
 				System.out.println("The game stopped");
 				continue;
@@ -153,8 +171,9 @@ public class Client extends Thread {
 	
 	public void stopProcess() {
 		keepAlive = false;
-		player.close();
 		PlayActivity.ih.activity.finish();
+		player.close();
+
 	}
 	
 	public static void main(String[] args) {

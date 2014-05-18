@@ -95,15 +95,6 @@
         android:text="Button" />
 
     <TextView
-        android:id="@+id/question_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:text="Q_value" />
-
-    <TextView
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,5 +110,22 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/question_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/intrebare"
+        android:layout_alignLeft="@+id/question_counter"
+        android:text="Q_value" />
+
+    <Button
+        android:id="@+id/buttonExitPlay"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/buttonD"
+        android:layout_centerHorizontal="true"
+        android:text="EXIT" />
 
 </RelativeLayout>

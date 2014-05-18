@@ -67,6 +67,13 @@ public class QuestionGenerator {
 			CountryInformation cInfo = getInfo().get(rand.nextInt(getInfo().size()));
 			if (!variants.contains(cInfo)) {
 				
+				// If a question contains an empty value, then check another possible
+				// question.
+				String possibleQuestionField = getQuestionUnique(cInfo, qtype);
+				if (possibleQuestionField == null || possibleQuestionField.isEmpty()) {
+					continue;
+				}
+				
 				// If a new CountryInformation contains qtype value that already exists
 				// in variants, we must check for another CountryInformation
 				// e.g. Varinats [Europe, Oceania]. If new possible variant contains
@@ -105,6 +112,25 @@ public class QuestionGenerator {
 		}
 		
 		return new Question(question, variantsAnswers, solution, qtype.toString());
+	}
+	
+	public String getQuestionUnique(CountryInformation country, InformationType qtype) {
+		switch(qtype) {
+		case NAME:
+			return country.getCapital();
+		case CODE:
+			return country.getName();
+		case POPULATION:
+			return country.getName();
+		case CONTINENT:
+			return country.getName();
+		case AREA:
+			return country.getName();
+		case CAPITAL:
+			return country.getName();
+		default:
+			return "N/A";
+	}
 	}
 
 	public void printCountriesInformation() {

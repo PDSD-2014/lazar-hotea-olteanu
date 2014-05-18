@@ -66,9 +66,32 @@ public class QuestionGenerator {
 		while (i < 4) {
 			CountryInformation cInfo = getInfo().get(rand.nextInt(getInfo().size()));
 			if (!variants.contains(cInfo)) {
-				variants.add(cInfo);
-				i++;
+				
+				// If a new CountryInformation contains qtype value that already exists
+				// in variants, we must check for another CountryInformation
+				// e.g. Varinats [Europe, Oceania]. If new possible variant contains
+				// Europe continent, is not a valid variant because Europe already exists.
+				// Also, an empty qtype value is not a valid variant
+				String possibleVariant = getAnswer(cInfo, qtype);
+				Boolean exists = false;
+				
+				if (possibleVariant == null || possibleVariant.isEmpty()) {
+					exists = true;
+				} else {
+					for (CountryInformation el : variants) {
+						String eachVariant = getAnswer(el, qtype);
+						if (possibleVariant.equals(eachVariant)) {
+							exists = true;
+						}
+					}
+				}
+				
+				if (!exists) {
+					variants.add(cInfo);
+					i++;
+				}
 			}
+			
 		}
 		
 		ArrayList<String> variantsAnswers = new ArrayList<String>(4);

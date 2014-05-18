@@ -67,6 +67,7 @@ public class Player extends Thread {
                 		question = gameRoom.getQuestionNumber(qCounter);
                 		connection.writeMessage(MessageType.QUESTION + question.JSONToString());
                 		qCounter += 1;
+                		waitForOpponent = true;
                 	}
                 	
                 	state = PlayerState.RESPONSE_STATE;

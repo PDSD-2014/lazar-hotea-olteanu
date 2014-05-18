@@ -1,17 +1,23 @@
 package core;
+import gameplay.CountryInformation;
+import gameplay.GameRoom;
+import gameplay.Player;
+import gameplay.QuestionGenerator;
+import gameplay.Score;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
 
 import utils.GameInfo;
 import utils.MessageType;
-import db.*;
-import gameplay.*;
+import db.DBConnection;
 
 public class Server {
 	private ServerSocket serverSocket;
@@ -108,13 +114,23 @@ public class Server {
 		InputStream input = null;
 		Server server = null;
 		try {
+			PrintWriter writer = new PrintWriter("out.txt", "UTF-8");
 			input = new FileInputStream("config.properties");
-			
+			System.out.println("wadawdwad");
+			if(input == null)
+				writer.println("da sigur");
 			// load a properties file
+			if(prop == null)
+				writer.println("da sigur1");
+
 			prop.load(input);
 			
 			server = new Server(Integer.parseInt(prop.getProperty("listening_port")));
-			
+			if(server == null) {
+				writer.println("da sigur2");
+
+			}
+			writer.close();
 			server.populateCountryInformation(prop.getProperty("dburl"),
 					prop.getProperty("dbuser"), prop.getProperty("dbpassword"));
 			server.start();

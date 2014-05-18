@@ -1,11 +1,16 @@
 package com.example.proiectpdsd;
 
+import gameplay.Question;
+
 import java.util.Currency;
 
+import utils.GameInfo;
+import utils.MessageType;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,40 +24,64 @@ public class InterfaceHandler {
 	int question_counter;
 	Button answerSelected;
 	Drawable defaultButtonColour;
-	
-	public InterfaceHandler(Activity _activity) {
-		this.activity = _activity;
+	CountDownTimer timer;
+	String currentAns;
+	Boolean canAns;
+	public InterfaceHandler(Activity activity) {
+		this.activity = activity;
 	}
 	public void InitInterface() {
-		Button b;
-		b = (Button)activity.findViewById(R.id.buttonA);
+	//	Button b;
+		Button b = (Button)activity.findViewById(R.id.buttonA);
+	
+		if(b==null) {
+			Log.d("lemn","A");
+		}
 		AddListenerButton(b);
 		b = (Button)activity.findViewById(R.id.buttonB);
+		if(b==null) {
+			Log.d("lemn","B");
+		}
 		AddListenerButton(b);
 		b = (Button)activity.findViewById(R.id.buttonC);
+		if(b==null) {
+			Log.d("lemn","C");
+		}
 		AddListenerButton(b);
 		b = (Button)activity.findViewById(R.id.buttonD);
+		if(b==null) {
+			Log.d("lemn","D");
+		}
 		AddListenerButton(b);
 		defaultButtonColour = b.getBackground();
+	
 	}
-	void AddListenerButton(final Button b) {
+	void AddListenerButton( Button b) {
+		if(b==null) {
+			Log.d("lemn","b e null _________________");
+		}
+		final int id = b.getId();
 		b.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				SetSelectedAnswer(b.getId());
+				if(canAns) {
+					StopTimer();
+					SetSelectedAnswer(id);
+				}
 				
 			}
 		});
 	}
 	public void SetSelectedAnswer(int id) {
 		Button b = (Button)activity.findViewById(id);
-		if (answerSelected != null) {
-			answerSelected.setBackgroundDrawable(defaultButtonColour);
-		}
-			answerSelected = b;
-			answerSelected.setBackgroundColor(Color.BLUE);
-		
+		Log.d("buttontext", b.getText().toString());
+		canAns = false;
+		answerSelected = b;
+		answerSelected.setBackgroundColor(Color.YELLOW);
+		String response = MessageType.QUESTION_ANSWER + b.getText().toString() ;
+		MainActivity.client.player.writeMessage(response);
+	
 	}
 	public Button GetSelectedAnswer() {
 		return answerSelected;
@@ -83,6 +112,10 @@ public class InterfaceHandler {
 	
 	public void SetMyName(String str) {
 		TextView t = (TextView)activity.findViewById(R.id.myname);
+		if(t==null)
+			Log.d("null","mytextname e null");
+		if(str==null)
+			Log.d("null","str e null");
 		t.setText(str);
 	}
 	public void SetOppName(String str) {
@@ -109,7 +142,10 @@ public class InterfaceHandler {
 		Log.d("dwadwa", "am intrat");
 		long start = 15000;
 		long interval = 1000;
-		CountDownTimer timer = new CountDownTimer(start,interval) {
+		if(timer != null) {
+			timer.cancel();
+		}
+		timer = new CountDownTimer(start,interval) {
 			//final 
 			
 			public void onTick(long millisUntilFinished) {
@@ -127,6 +163,68 @@ public class InterfaceHandler {
 			}
 		}.start();
 	}
+	public void StopTimer() {
+		
+activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				timer.cancel();
+				TextView t = (TextView)activity.findViewById(R.id.timer);
+				t.setText("");
+			}
+		});
+
+	}
+	public void ShowCorrectAnswer() {
+		Log.d("dwadwa", "am intrat");
+		long start = 4000;
+		long interval = 500;
+		if(timer != null) {
+			timer.cancel();
+		}
+		timer = new CountDownTimer(start,interval) {
+			//final 
+			
+			public void onTick(long millisUntilFinished) {
+				Log.d(String.valueOf(millisUntilFinished/500), "da sigur");
+				
+				//((TextView)activity.findViewById(R.id.timer)).setText(String.valueOf(millisUntilFinished/1000));
+				if((millisUntilFinished / 500) %2 == 0 )
+					GetButtonAnswer(currentAns).setBackgroundDrawable(defaultButtonColour);
+				else
+					GetButtonAnswer(currentAns).setBackgroundColor(Color.BLUE);		
+			}
+			
+		
+			public void onFinish() {
+				GetButtonAnswer(currentAns).setBackgroundDrawable(defaultButtonColour);
+				answerSelected.setBackgroundDrawable(defaultButtonColour);
+
+			}
+		}.start();
+	}
+	Button GetButtonAnswer(String ans) {
+		Button b = (Button)activity.findViewById(R.id.buttonA);
+		Log.d(b.getText().toString(), currentAns);
+		if(b.getText().toString().equals((currentAns)))
+			return b;
+		 b = (Button)activity.findViewById(R.id.buttonB);
+		 Log.d(b.getText().toString(), currentAns);
+		 if(b.getText().toString().equals((currentAns)))
+			return b;
+		 b = (Button)activity.findViewById(R.id.buttonC);
+		 Log.d(b.getText().toString(), currentAns);
+		 if(b.getText().toString().equals((currentAns)))
+			return b;
+		 b = (Button)activity.findViewById(R.id.buttonD);
+		 Log.d(b.getText().toString(), currentAns);
+		 if(b.getText().toString().equals((currentAns)))
+			return b;
+		Log.d("getbuttonans","returneaza nulllll");
+		return null;
+	}
 	public void SetNewQuestion(String question,String ansA,String ansB,String ansC,String ansD, String value) {
 		SetQuestionCounter(String.valueOf(question_counter++));
 		SetQuestion(question);
@@ -138,9 +236,56 @@ public class InterfaceHandler {
 		SetCountDownTimer();
 	}
 	
+	public void UpdateQuestion(final Question q) {
+		Log.d("updateq","before setans");
+		
+		Log.d("updateq","after setans");
+		canAns = true;
+		currentAns = q.getSolution();
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				SetQuestion(q.getQuestion());
+				SetAnswerA(q.getVariants().get(0));
+				SetAnswerB(q.getVariants().get(1));
+				SetAnswerC(q.getVariants().get(2));
+				SetAnswerD(q.getVariants().get(3));
+				SetQuestionValue("val:" + String.valueOf(1));
+				question_counter++;
+				SetQuestionCounter(String.valueOf(question_counter));
+				SetCountDownTimer();
+				
+			}
+		});
+		
+	}
 	
-	
-	
-	
-	
+	public void SetGameInfo(final GameInfo gameInfo){
+				activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				SetMyName(gameInfo.getPlayerOne());
+				SetOppName(gameInfo.getPlayerTwo());
+				SetMyPoints(String.valueOf( gameInfo.getPlayerOneScore()));
+				SetOppPoints(String.valueOf( gameInfo.getPlayerTwoScore()));
+
+			}
+		});
+	}
+	public void UpdateScore(final GameInfo gameInfo) {
+			activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+
+					SetMyPoints(String.valueOf( gameInfo.getPlayerOneScore()));
+					SetOppPoints(String.valueOf(gameInfo.getPlayerTwoScore()));
+					ShowCorrectAnswer();
+			}
+			});
+	}
 }

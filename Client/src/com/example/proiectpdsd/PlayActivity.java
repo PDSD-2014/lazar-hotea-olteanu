@@ -6,13 +6,25 @@ import android.util.Log;
 import android.view.Menu;
 
 public class PlayActivity extends Activity {
-	InterfaceHandler ih = new InterfaceHandler(this); ; 
+	static InterfaceHandler ih;
+	static ClientPlay clientplay;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ih.InitInterface();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
-	
+		
+		
+		ih = new InterfaceHandler(this);
+		ih.InitInterface();
+		ih.SetGameInfo(Client.gInfoInitial);
+	//	clientplay = new ClientPlay();
+	//	clientplay.start();
+
+		
+		
+		
+
 	}
 
 	@Override

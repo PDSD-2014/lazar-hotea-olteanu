@@ -6,6 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/cristi/pdsd/proiect/Client/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/iulianlaz/Dropbox/Facultate/An_IV_sem_II/PDSD/proiect/lazar-hotea-olteanu/Server/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

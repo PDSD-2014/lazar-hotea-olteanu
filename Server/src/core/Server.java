@@ -64,11 +64,15 @@ public class Server {
 					scores.put(userName, userScore);
 				}
 				GameRoom lastRoom = gameRooms.get(gameRooms.size() - 1);
+				System.out.println("_____Last Room____" + lastRoom.getNumberOfQuestions());
+				System.out.println("_______________Check Room_________" + gameRooms.size());
 				if (!lastRoom.isFull()) {
 					Player player = new Player(playerSocket, userName, userScore);
 					lastRoom.addPlayer(player);
 					player.setGameRoom(lastRoom);
 					if (lastRoom.isFull()) {
+						System.out.println("_____Last Room 22____" + lastRoom.getNumberOfQuestions() + " " +
+								lastRoom.getPlayerOne().getUserName() + " " + lastRoom.getPlayerTwo().getUserName());
 						GameInfo gameInfo = new GameInfo(lastRoom.getRoomId(), 
 								lastRoom.getPlayerOne().getUserName(),
 								lastRoom.getPlayerTwo().getUserName());
@@ -84,8 +88,12 @@ public class Server {
 						lastRoom.startGame();
 					}
 				} else {
+					System.out.println("_______________New Room_________" + gameRooms.size());
 					GameRoom newRoom = new GameRoom(gameRooms.size());
-					newRoom.addPlayer(new Player(playerSocket, userName, userScore));
+					
+					Player newPlayer = new Player(playerSocket, userName, userScore);
+					newRoom.addPlayer(newPlayer);
+					newPlayer.setGameRoom(newRoom);
 					gameRooms.add(newRoom);
 				}
 			}

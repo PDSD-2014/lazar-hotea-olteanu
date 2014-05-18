@@ -33,7 +33,7 @@ public class PlayerSocket {
 			response = reader.readLine();
 		} catch (SocketTimeoutException se) {
 			response = "TIMEOUT";
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			System.out.println("________" + "IOException: null response" + "_________________" + e);

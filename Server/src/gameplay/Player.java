@@ -50,6 +50,10 @@ public class Player extends Thread {
             		break;
             	case QUESTION_STATE:
                 	//check if we send all the questions
+            		if (gameRoom == null) {
+            			System.out.println("_____Game Room is null_________________");
+            		}
+            		System.out.println(qCounter + " ____________GameRoom in player______" + gameRoom.getNumberOfQuestions());
             		if (qCounter >= gameRoom.getNumberOfQuestions()) {
             			System.out.println("END of game");
             			keepAlive = false;
@@ -68,6 +72,7 @@ public class Player extends Thread {
                 		connection.writeMessage(MessageType.QUESTION + question.JSONToString());
                 		waitForOpponent = true;
                 		qCounter += 1;
+                		waitForOpponent = true;
                 	}
                 	
                 	state = PlayerState.RESPONSE_STATE;
@@ -86,6 +91,10 @@ public class Player extends Thread {
 					//remove the timer
                 	connection.getSocket().setSoTimeout(INF);
                 	
+                	if (response == null) {
+                		System.out.println("_________Response is null !!!!!!!!!!!!!!!__________");
+                		return;
+                	}
                 	if (response.equals("TIMEOUT")) {
                 		//TODO 03.1: if the timer expired send a TIMEOUT
                 		if (connection.getSocket().isOutputShutdown()) {

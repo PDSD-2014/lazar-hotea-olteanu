@@ -24,7 +24,7 @@ public class InterfaceHandler {
 	public Activity activity;
 	int question_counter;
 	Button answerSelected;
-	Drawable defaultButtonColour;
+	int defaultButtonColour;
 	CountDownTimer timer;
 	String currentAns;
 	Boolean canAns;
@@ -54,7 +54,8 @@ public class InterfaceHandler {
 			Log.d("lemn","D");
 		}
 		AddListenerButton(b);
-		defaultButtonColour = b.getBackground();
+		//defaultButtonColour = b.getBackground();
+		defaultButtonColour = Color.parseColor("#CBDDF5");
 	
 		b = (Button)activity.findViewById(R.id.buttonExitPlay);
 		b.setOnClickListener(new OnClickListener() {
@@ -216,15 +217,15 @@ activity.runOnUiThread(new Runnable() {
 				
 				//((TextView)activity.findViewById(R.id.timer)).setText(String.valueOf(millisUntilFinished/1000));
 				if((millisUntilFinished / 500) %2 == 0 )
-					GetButtonAnswer(currentAns).setBackgroundDrawable(defaultButtonColour);
+					GetButtonAnswer(currentAns).setBackgroundColor((defaultButtonColour));
 				else
-					GetButtonAnswer(currentAns).setBackgroundColor(Color.GREEN);		
+					GetButtonAnswer(currentAns).setBackgroundColor(Color.parseColor("#0FFA2A"));		
 			}
 			
 		
 			public void onFinish() {
-				GetButtonAnswer(currentAns).setBackgroundDrawable(defaultButtonColour);
-				answerSelected.setBackgroundDrawable(defaultButtonColour);
+				GetButtonAnswer(currentAns).setBackgroundColor((defaultButtonColour));
+				answerSelected.setBackgroundColor((defaultButtonColour));
 
 			}
 		}.start();

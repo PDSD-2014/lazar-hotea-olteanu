@@ -17,7 +17,7 @@ public class Client extends Thread {
 	final String TAG = "ClientSocket";
 	
 	// The address and port of the server.
-	final String HOST = "10.6.4.153";
+	final String HOST = "54.72.185.11";
 	final int PORT = 9999;
 	public static PlayerSocket player;
 	private boolean keepAlive;
@@ -109,7 +109,7 @@ public class Client extends Thread {
 				
 				PlayActivity.ih.EndGame();
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -143,7 +143,7 @@ public class Client extends Thread {
 			if (msg.equals(MessageType.END_GAME) || msg.equals(MessageType.STOP_GAME)) {
 				PlayActivity.ih.EndGame();
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

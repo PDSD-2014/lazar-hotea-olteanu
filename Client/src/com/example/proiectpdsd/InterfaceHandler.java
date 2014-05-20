@@ -102,7 +102,7 @@ public class InterfaceHandler {
 		return answerSelected.getText().toString();
 	}
 	public void SetQuestion(String str) {
-		TextView t = (TextView)activity.findViewById(R.id.intrebare);
+		TextView t = (TextView)activity.findViewById(R.id.titleSmart);
 		t.setText(str);
 	}
 	public void SetAnswerA(String str) {
@@ -131,7 +131,7 @@ public class InterfaceHandler {
 		return t.getText().toString();
 	}
 	public void SetOppName(String str) {
-		TextView t = (TextView)activity.findViewById(R.id.oppname);
+		TextView t = (TextView)activity.findViewById(R.id.username);
 		t.setText(str);
 	}
 	public String GetOppName() {
@@ -260,7 +260,7 @@ activity.runOnUiThread(new Runnable() {
 		SetCountDownTimer();
 	}
 	public TextView getQuestionTextView() {
-		TextView t = (TextView)activity.findViewById(R.id.intrebare);
+		TextView t = (TextView)activity.findViewById(R.id.titleSmart);
 		return t;
 	}
 	public void EndGame()  {

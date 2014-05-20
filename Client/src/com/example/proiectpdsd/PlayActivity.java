@@ -2,6 +2,7 @@ package com.example.proiectpdsd;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.util.Log;
 import android.view.Menu;
 
@@ -14,7 +15,7 @@ public class PlayActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
-		
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
 		ih = new InterfaceHandler(this);
 		ih.InitInterface();

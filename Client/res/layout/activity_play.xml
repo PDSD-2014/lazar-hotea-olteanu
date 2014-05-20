@@ -10,7 +10,7 @@
 
  
     <TextView
-        android:id="@+id/oppname"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/myname"
@@ -44,10 +44,10 @@
         android:text="oppoints" />
 
     <TextView
-        android:id="@+id/intrebare"
+        android:id="@+id/titleSmart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/oppname"
+        android:layout_below="@+id/username"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="Intrebare" />
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/intrebare"
+        android:layout_below="@+id/titleSmart"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="30dp"
         android:text="Button" />
@@ -98,7 +98,7 @@
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/intrebare"
+        android:layout_below="@+id/titleSmart"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="Timer" />
@@ -115,7 +115,7 @@
         android:id="@+id/question_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/intrebare"
+        android:layout_above="@+id/titleSmart"
         android:layout_alignLeft="@+id/question_counter"
         android:text="Q_value" />
 
